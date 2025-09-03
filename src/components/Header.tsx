@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { SettingsIcon, SearchIcon } from './Icons';
+import { SettingsIcon, SearchIcon, PreviousDayIcon, NextDayIcon } from './Icons';
 import Timeline from './Timeline';
 import type { ProcessedTimelog, JiraAccount } from '../types/jira';
 import { formatTotalSeconds } from '../utils/time';
@@ -53,12 +53,20 @@ const Header: React.FC<HeaderProps> = ({
           </div>
           <div className="overflow-hidden">
             <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Select Date</label>
-            <input
-              type="date"
-              value={formatDateForInput(selectedDate)}
-              onChange={(e) => setSelectedDate(e.target.value ? moment(e.target.value).toDate() : new Date())}
-              className="w-full p-2 border rounded-md bg-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-            />
+            <div className="flex items-center border rounded-md overflow-hidden dark:border-gray-600">
+              <button onClick={() => setSelectedDate(moment(selectedDate).subtract(1, 'day').toDate())} className="p-2">
+                <PreviousDayIcon />
+              </button>
+              <input
+                type="date"
+                value={formatDateForInput(selectedDate)}
+                onChange={(e) => setSelectedDate(e.target.value ? moment(e.target.value).toDate() : new Date())}
+                className="w-full p-2 border-x bg-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+              />
+              <button onClick={() => setSelectedDate(moment(selectedDate).add(1, 'day').toDate())} className="p-2">
+                <NextDayIcon />
+              </button>
+            </div>
           </div>
           <button onClick={() => setSearchModalOpen(true)} className="p-2.5 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
             <SearchIcon />
